@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CameraControls } from "@/components/camera/CameraControls";
@@ -25,7 +25,12 @@ export default function CameraPage() {
   const [count, setCount] = useState<number | null>(null);
   const [flash, setFlash] = useState(false);
   const [lastShot, setLastShot] = useState<string | null>(null);
-  const [capturing, setCapturing] = useState(false);
+  const [sessionActive, setSessionActive] = useState(false);
+  const [shotIndex, setShotIndex] = useState(0);
+
+  const cancelledRef = useRef(false);
+  const photosRef = useRef(photos);
+  photosRef.current = photos;
 
   const needed = layout.slotCount;
   const taken = photos.length;
@@ -37,50 +42,106 @@ export default function CameraPage() {
   );
 
   useEffect(() => {
-    if (taken >= needed && needed > 0) {
-      const id = window.setTimeout(() => router.push("/booth/review"), 400);
+    return () => {
+      cancelledRef.current = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!sessionActive && taken >= needed && needed > 0) {
+      const id = window.setTimeout(() => router.push("/booth/review"), 500);
       return () => window.clearTimeout(id);
     }
-  }, [taken, needed, router]);
+  }, [taken, needed, router, sessionActive]);
+
+  const sleep = (ms: number) =>
+    new Promise<void>((resolve) => {
+      window.setTimeout(resolve, ms);
+    });
+
+  const runCountdown = useCallback(async (seconds: number) => {
+    for (let n = seconds; n >= 1; n--) {
+      if (cancelledRef.current) return false;
+      setCount(n);
+      await sleep(1000);
+    }
+    setCount(null);
+    return !cancelledRef.current;
+  }, []);
 
   const takeShot = useCallback(() => {
     const dataUrl = capture();
-    if (!dataUrl) return;
+    if (!dataUrl) return false;
     setFlash(true);
-    setTimeout(() => setFlash(false), 350);
+    window.setTimeout(() => setFlash(false), 350);
     setLastShot(dataUrl);
     addPhoto(dataUrl);
+    return true;
   }, [addPhoto, capture]);
 
-  const beginCapture = useCallback(() => {
-    if (!ready || capturing || remaining <= 0) return;
-    setCapturing(true);
+  /** One click starts a full booth run: countdown → snap → pause → repeat */
+  const beginBoothSession = useCallback(async () => {
+    if (!ready || sessionActive || remaining <= 0) return;
+    cancelledRef.current = false;
+    setSessionActive(true);
     setLastShot(null);
-    let n = countdown;
-    setCount(n);
-    const timer = window.setInterval(() => {
-      n -= 1;
-      if (n <= 0) {
-        window.clearInterval(timer);
-        setCount(null);
-        takeShot();
-        setCapturing(false);
-      } else {
-        setCount(n);
+
+    const startCount = photosRef.current.length;
+    const toTake = needed - startCount;
+
+    for (let i = 0; i < toTake; i++) {
+      if (cancelledRef.current) break;
+      setShotIndex(startCount + i + 1);
+
+      const ok = await runCountdown(countdown);
+      if (!ok) break;
+
+      takeShot();
+      // Brief "developing" beat between shots, like a real booth
+      if (i < toTake - 1) {
+        await sleep(700);
       }
-    }, 1000);
-  }, [ready, capturing, remaining, countdown, takeShot]);
+    }
+
+    if (!cancelledRef.current) {
+      setSessionActive(false);
+      setCount(null);
+      await sleep(600);
+      router.push("/booth/review");
+    } else {
+      setSessionActive(false);
+      setCount(null);
+    }
+  }, [
+    ready,
+    sessionActive,
+    remaining,
+    needed,
+    countdown,
+    runCountdown,
+    takeShot,
+    router,
+  ]);
 
   return (
     <div className="flex min-h-full flex-1 flex-col bg-booth-night text-booth-ivory">
       <header className="flex items-center justify-between px-4 pt-[max(0.75rem,var(--safe-top))]">
-        <Link href="/booth" className="text-sm font-medium text-booth-blush">
+        <Link
+          href="/booth"
+          className="text-sm font-medium text-booth-blush"
+          onClick={() => {
+            cancelledRef.current = true;
+          }}
+        >
           ← Layouts
         </Link>
         <p className="text-sm font-semibold">{progressLabel}</p>
         <Link
           href="/booth/review"
           className="text-sm font-medium text-booth-blush"
+          onClick={() => {
+            cancelledRef.current = true;
+          }}
         >
           Review
         </Link>
@@ -95,6 +156,12 @@ export default function CameraPage() {
             className="absolute inset-0 h-full w-full"
           />
           <CountdownTimer value={count} />
+
+          {sessionActive && (
+            <p className="absolute top-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-xs font-semibold text-booth-ivory">
+              Shot {shotIndex} of {needed}
+            </p>
+          )}
 
           {lastShot && (
             <div className="absolute bottom-3 left-3 overflow-hidden rounded-lg border border-white/30 shadow-lg develop-in">
@@ -115,15 +182,16 @@ export default function CameraPage() {
         ) : (
           <div className="mt-4">
             <CameraControls
-              onCapture={beginCapture}
+              onCapture={() => void beginBoothSession()}
               onFlip={flip}
-              canFlip={canFlip}
+              canFlip={canFlip && !sessionActive}
               countdown={countdown}
               onCountdownChange={setCountdown}
               disabled={!ready || remaining <= 0}
-              capturing={capturing}
+              capturing={sessionActive}
               remaining={remaining}
               total={needed}
+              boothMode
             />
           </div>
         )}

@@ -3,9 +3,9 @@
 import { cn } from "@/lib/utils";
 
 const COLORS = [
-  ["#ffc8d8", "#ffb0c4", "#f098b0", "#e080a0"],
-  ["#c8e8f8", "#b0d8f0", "#98c8e4", "#80b4d4"],
-  ["#ffe4b8", "#ffd4a0", "#f0c088", "#e0a870"],
+  ["#f2c4b0", "#e8a890", "#d89078", "#c87860"],
+  ["#c8d8f0", "#a8c0e0", "#90a8d0", "#7890c0"],
+  ["#f0c8d8", "#e0a8c0", "#d090b0", "#c07898"],
 ];
 
 export function SampleStrip({
@@ -21,22 +21,21 @@ export function SampleStrip({
   return (
     <div
       className={cn(
-        "float-strip paper-card relative flex w-16 flex-col gap-1.5 rounded-2xl p-2 sm:w-20",
+        "float-strip paper-card flex w-16 flex-col gap-1.5 rounded-sm p-2 sm:w-20",
         className,
       )}
       style={{ animationDelay: `${delay}s` }}
       aria-hidden
     >
-      <span className="absolute -top-1 -right-1 text-[10px] text-[#f2557a]">♡</span>
       {colors.map((c, i) => (
         <div
           key={i}
-          className="aspect-[4/3] w-full rounded-md"
+          className="aspect-[4/3] w-full rounded-[1px]"
           style={{ background: `linear-gradient(145deg, ${c}, ${c}bb)` }}
         />
       ))}
-      <div className="pt-1 text-center font-[family-name:var(--font-script)] text-[11px] text-booth-curtain">
-        cuties
+      <div className="pt-1 text-center font-[family-name:var(--font-script)] text-[10px] text-booth-muted">
+        07.21.26
       </div>
     </div>
   );

@@ -15,14 +15,13 @@ export default function BoothPage() {
 
   return (
     <BoothShell>
-      <div className="paper-card rounded-[1.75rem] p-5 sm:p-8">
+      <div className="paper-card rounded-3xl p-5 sm:p-8">
         <p className="text-xs font-semibold tracking-[0.18em] text-booth-curtain uppercase">
           New session
         </p>
         <h1 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-semibold text-booth-ink sm:text-4xl">
           Choose your strip layout
         </h1>
-        <p className="cute-tag mt-1 !text-booth-curtain">pick your fave ♡</p>
         <p className="mt-2 text-sm text-booth-muted sm:text-base">
           You&apos;ll take {layout.slotCount} photos for the{" "}
           <span className="font-semibold text-booth-ink">{layout.name}</span>{" "}

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Fraunces, Outfit } from "next/font/google";
+import { SiteCredit } from "@/components/ui/SiteCredit";
 import "./globals.css";
 
 const display = Fraunces({
@@ -30,7 +31,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#2a1520",
+  themeColor: "#1a1410",
 };
 
 export default function RootLayout({
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-[family-name:var(--font-body)]">
         <div className="grain-overlay" aria-hidden />
         {children}
+        <SiteCredit />
       </body>
     </html>
   );
