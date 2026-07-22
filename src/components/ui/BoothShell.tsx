@@ -14,11 +14,13 @@ export function BoothShell({
   return (
     <div className="relative flex min-h-full flex-1 flex-col">
       <header className="relative z-10 flex items-center justify-between px-4 pb-2 pt-[max(0.75rem,var(--safe-top))] sm:px-6">
-        <Link
-          href="/"
-          className="brand-mark font-[family-name:var(--font-display)] text-lg font-semibold tracking-tight sm:text-xl"
-        >
-          Photo Booth
+        <Link href="/" className="group">
+          <span className="brand-mark font-[family-name:var(--font-display)] text-lg font-semibold tracking-tight sm:text-xl">
+            Photo Booth
+          </span>
+          <span className="ml-1.5 font-[family-name:var(--font-script)] text-base text-[#ffd0dc]">
+            ♡
+          </span>
         </Link>
       </header>
       <main

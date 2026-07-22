@@ -1,22 +1,24 @@
 import Link from "next/link";
 import { BoothHero } from "@/components/landing/BoothHero";
+import { CuteSparks } from "@/components/landing/CuteSparks";
 import { SampleStrip } from "@/components/landing/SampleStrip";
 
 export default function HomePage() {
   return (
     <div className="relative flex min-h-full flex-1 flex-col overflow-hidden">
+      <CuteSparks />
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[60vh]"
         style={{
           background:
-            "radial-gradient(ellipse 80% 70% at 50% 0%, rgba(255,77,106,0.35) 0%, rgba(212,33,58,0.2) 35%, transparent 70%)",
+            "radial-gradient(ellipse 80% 70% at 50% 0%, rgba(255,138,173,0.4) 0%, rgba(242,85,122,0.18) 40%, transparent 72%)",
         }}
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-48"
         style={{
           background:
-            "linear-gradient(to top, rgba(226,184,74,0.12), transparent)",
+            "linear-gradient(to top, rgba(255,208,220,0.12), transparent)",
         }}
       />
 
@@ -24,6 +26,7 @@ export default function HomePage() {
         <p className="brand-mark font-[family-name:var(--font-display)] text-sm font-semibold tracking-[0.22em]">
           PHOTO BOOTH
         </p>
+        <p className="cute-tag mt-1">smile for the camera ♡</p>
       </header>
 
       <main className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center px-5 pb-[max(2rem,var(--safe-bottom))] pt-4 sm:px-8 lg:flex-row lg:items-center lg:gap-12 lg:pt-0">
@@ -45,7 +48,7 @@ export default function HomePage() {
             Step Into the Photo Booth
           </h1>
           <p className="mt-4 text-base leading-relaxed text-booth-blush sm:text-lg">
-            Take photos alone or make a strip with friends, wherever they are.
+            Take the cutest photos alone — or make a strip with friends, wherever they are.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
