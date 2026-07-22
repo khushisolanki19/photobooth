@@ -435,6 +435,126 @@ export function drawDecoration(
       ctx.fill();
       break;
     }
+    case "diya": {
+      ctx.fillStyle = "#C45C26";
+      ctx.beginPath();
+      ctx.ellipse(0, s * 0.25, s * 0.7, s * 0.35, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#E07030";
+      ctx.beginPath();
+      ctx.ellipse(0, s * 0.15, s * 0.55, s * 0.22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Flame
+      const flame = ctx.createRadialGradient(0, -s * 0.25, 0, 0, -s * 0.2, s * 0.45);
+      flame.addColorStop(0, "#FFF4A0");
+      flame.addColorStop(0.45, "#FFB020");
+      flame.addColorStop(1, "rgba(255,100,20,0)");
+      ctx.fillStyle = flame;
+      ctx.beginPath();
+      ctx.moveTo(0, -s * 0.7);
+      ctx.quadraticCurveTo(s * 0.28, -s * 0.25, 0, s * 0.05);
+      ctx.quadraticCurveTo(-s * 0.28, -s * 0.25, 0, -s * 0.7);
+      ctx.fill();
+      break;
+    }
+    case "sparkler": {
+      ctx.strokeStyle = "#C8A060";
+      ctx.lineWidth = Math.max(2, s * 0.1);
+      ctx.beginPath();
+      ctx.moveTo(0, s * 0.75);
+      ctx.lineTo(0, -s * 0.05);
+      ctx.stroke();
+      const sparks = color || "#FFE8A0";
+      for (let i = 0; i < 12; i++) {
+        const a = (i / 12) * Math.PI * 2;
+        const len = s * (0.35 + (i % 3) * 0.12);
+        ctx.strokeStyle = i % 2 === 0 ? sparks : "#FFD060";
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(0, -s * 0.1);
+        ctx.lineTo(Math.cos(a) * len, -s * 0.1 + Math.sin(a) * len);
+        ctx.stroke();
+      }
+      ctx.fillStyle = "#FFF8C0";
+      ctx.beginPath();
+      ctx.arc(0, -s * 0.1, s * 0.12, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+    }
+    case "rangoli": {
+      const colors = ["#E04060", "#FF9A20", "#40A0E0", "#50C070", "#C040E0"];
+      for (let ring = 3; ring >= 1; ring--) {
+        ctx.strokeStyle = colors[ring % colors.length];
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, s * 0.22 * ring, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.beginPath();
+        ctx.ellipse(
+          Math.cos(a) * s * 0.55,
+          Math.sin(a) * s * 0.55,
+          s * 0.16,
+          s * 0.1,
+          a,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      }
+      ctx.fillStyle = "#FFD060";
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.14, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+    }
+    case "lotus": {
+      ctx.fillStyle = color || "#F0A0C8";
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2 - Math.PI / 2;
+        ctx.beginPath();
+        ctx.ellipse(
+          Math.cos(a) * s * 0.22,
+          Math.sin(a) * s * 0.18,
+          s * 0.22,
+          s * 0.4,
+          a,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      }
+      ctx.fillStyle = "#FFE8A0";
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.18, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+    }
+    case "marigold": {
+      ctx.fillStyle = color || "#FF9A20";
+      for (let i = 0; i < 10; i++) {
+        const a = (i / 10) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.ellipse(
+          Math.cos(a) * s * 0.28,
+          Math.sin(a) * s * 0.28,
+          s * 0.22,
+          s * 0.14,
+          a,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      }
+      ctx.fillStyle = "#FFE060";
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.22, 0, Math.PI * 2);
+      ctx.fill();
+      break;
+    }
     default:
       break;
   }

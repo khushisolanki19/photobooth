@@ -344,6 +344,117 @@ function DecorationGlyph({
           points={`${s * 0.15},${-s * 0.85} ${-s * 0.35},${s * 0.05} ${s * 0.05},${s * 0.05} ${-s * 0.15},${s * 0.85} ${s * 0.4},${-s * 0.1} ${s * 0.05},${-s * 0.1}`}
         />
       );
+    case "diya":
+      return (
+        <g>
+          <ellipse cx={0} cy={s * 0.25} rx={s * 0.7} ry={s * 0.35} fill="#C45C26" />
+          <ellipse cx={0} cy={s * 0.15} rx={s * 0.55} ry={s * 0.22} fill="#E07030" />
+          <path
+            d={`M0 ${-s * 0.7} Q ${s * 0.28} ${-s * 0.25} 0 ${s * 0.05} Q ${-s * 0.28} ${-s * 0.25} 0 ${-s * 0.7}Z`}
+            fill="#FFB020"
+          />
+          <ellipse cx={0} cy={-s * 0.35} rx={s * 0.1} ry={s * 0.18} fill="#FFF4A0" />
+        </g>
+      );
+    case "sparkler":
+      return (
+        <g>
+          <line
+            x1={0}
+            y1={s * 0.75}
+            x2={0}
+            y2={-s * 0.05}
+            stroke="#C8A060"
+            strokeWidth={Math.max(2, s * 0.1)}
+          />
+          {Array.from({ length: 12 }, (_, i) => {
+            const a = (i / 12) * Math.PI * 2;
+            const len = s * (0.35 + (i % 3) * 0.12);
+            return (
+              <line
+                key={i}
+                x1={0}
+                y1={-s * 0.1}
+                x2={Math.cos(a) * len}
+                y2={-s * 0.1 + Math.sin(a) * len}
+                stroke={i % 2 === 0 ? color : "#FFD060"}
+                strokeWidth={1.6}
+              />
+            );
+          })}
+          <circle cx={0} cy={-s * 0.1} r={s * 0.12} fill="#FFF8C0" />
+        </g>
+      );
+    case "rangoli":
+      return (
+        <g>
+          {[3, 2, 1].map((ring) => (
+            <circle
+              key={ring}
+              r={s * 0.22 * ring}
+              fill="none"
+              stroke={["#E04060", "#FF9A20", "#40A0E0"][ring % 3]}
+              strokeWidth={2.5}
+            />
+          ))}
+          {Array.from({ length: 8 }, (_, i) => {
+            const a = (i / 8) * Math.PI * 2;
+            const cols = ["#E04060", "#FF9A20", "#40A0E0", "#50C070"];
+            return (
+              <ellipse
+                key={i}
+                cx={Math.cos(a) * s * 0.55}
+                cy={Math.sin(a) * s * 0.55}
+                rx={s * 0.16}
+                ry={s * 0.1}
+                transform={`rotate(${(a * 180) / Math.PI})`}
+                fill={cols[i % cols.length]}
+              />
+            );
+          })}
+          <circle r={s * 0.14} fill="#FFD060" />
+        </g>
+      );
+    case "lotus":
+      return (
+        <g>
+          {Array.from({ length: 6 }, (_, i) => {
+            const a = (i / 6) * Math.PI * 2 - Math.PI / 2;
+            return (
+              <ellipse
+                key={i}
+                cx={Math.cos(a) * s * 0.22}
+                cy={Math.sin(a) * s * 0.18}
+                rx={s * 0.22}
+                ry={s * 0.4}
+                transform={`rotate(${(a * 180) / Math.PI})`}
+                fill={color}
+              />
+            );
+          })}
+          <circle r={s * 0.18} fill="#FFE8A0" />
+        </g>
+      );
+    case "marigold":
+      return (
+        <g>
+          {Array.from({ length: 10 }, (_, i) => {
+            const a = (i / 10) * Math.PI * 2;
+            return (
+              <ellipse
+                key={i}
+                cx={Math.cos(a) * s * 0.28}
+                cy={Math.sin(a) * s * 0.28}
+                rx={s * 0.22}
+                ry={s * 0.14}
+                transform={`rotate(${(a * 180) / Math.PI})`}
+                fill={color}
+              />
+            );
+          })}
+          <circle r={s * 0.22} fill="#FFE060" />
+        </g>
+      );
     default:
       return <circle r={s * 0.3} fill={color} />;
   }

@@ -24,6 +24,10 @@ const DECOR_SETS: DecorationKind[][] = [
   ["crown", "sparkle", "star"],
   ["lightning", "star", "music"],
   ["icecream", "cloud", "smile"],
+  ["diya", "sparkler", "star"],
+  ["sparkler", "sparkle", "heart"],
+  ["rangoli", "marigold", "lotus"],
+  ["lotus", "diya", "sparkle"],
 ];
 
 const ANCHORS = [

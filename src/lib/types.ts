@@ -61,7 +61,12 @@ export type DecorationKind =
   | "crown"
   | "music"
   | "icecream"
-  | "lightning";
+  | "lightning"
+  | "diya"
+  | "sparkler"
+  | "rangoli"
+  | "lotus"
+  | "marigold";
 
 export type DecorationAnchor =
   | "strip-tl"
@@ -181,6 +186,7 @@ export type ThemeCategory =
   | "Minimal"
   | "Seasonal"
   | "Holiday"
+  | "Indian"
   | "Custom";
 
 export interface StripTheme {

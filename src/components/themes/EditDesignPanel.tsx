@@ -29,6 +29,11 @@ const DECOR_OPTIONS: { kind: DecorationKind; label: string }[] = [
   { kind: "music", label: "Music" },
   { kind: "icecream", label: "Ice cream" },
   { kind: "lightning", label: "Lightning" },
+  { kind: "diya", label: "Diya" },
+  { kind: "sparkler", label: "Sparkler" },
+  { kind: "rangoli", label: "Rangoli" },
+  { kind: "lotus", label: "Lotus" },
+  { kind: "marigold", label: "Marigold" },
 ];
 
 const ANCHORS = [
